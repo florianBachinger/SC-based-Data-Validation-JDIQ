@@ -48,6 +48,7 @@ for equation in equations:
   equation_constraints["Lambdas"] = Lambdas
   equation_constraints["Alphas"] = Alphas
   equation_constraints["MaxInteractions"] = MaxInteractions
+  equation_constraints["TrainTestSplit"] = 0.8
 
   with open(f'{foldername}/{equation_name}.json', 'w') as f:
     f.write(str(equation_constraints).replace('\'', '"'))
@@ -81,7 +82,7 @@ for equation in equations:
     data["varied_variable_name"] = [varied_variable_name] * size
 
     filename = f"{equation_name}_{varied_variable_name}"
-    data.to_csv(f"{foldername}/{filename}.csv", index = False)
+    # data.to_csv(f"{foldername}/{filename}.csv", index = False)
 
     df.loc[df_row] = [
       equation_name,
