@@ -4,6 +4,14 @@ import Feynman.Functions as ff
 import SyntheticError.DataTransformation as ef
 import Feynman.Constraints as fc
 
+size = 2000
+foldername = 'data/2.1.1-univariate_error'
+
+Degrees = [3]
+Lambdas = [10**-7]
+Alphas = [0]
+MaxInteractions = [3]
+
 target_with_errorVariable = 'target_with_error'
 target_with_noiseVariable = 'target_with_noise'
 target_variable = target_with_errorVariable
@@ -38,20 +46,14 @@ def Monotonic(gradients):
     return descriptor
   return 'none'
 
-Degrees = [3]
-Lambdas = [10**-7]
-Alphas = [0]
-MaxInteractions = [3]
 
-size = 2000
-foldername = 'data/univariate_error'
 
 # take only the equations specified above
 filter = [ np.any( [item['DescriptiveName'].endswith(name) for name in instances] ) for item in ff.FunctionsJson]
 equations = np.array(ff.FunctionsJson)[filter]
 
 # perpare one meta dataset with all relevant information
-df = pd.DataFrame( columns = ['EquationName','FileName','Variable', 'ErrorFunction', 'ErrorDetectable'])
+df = pd.DataFrame( columns = ['EquationName','FileName','Variable', 'ErrorFunction', 'ConstraintsViolated'])
 i = 0 
 
 # for each target equation
@@ -67,6 +69,7 @@ for equation in equations:
   equation_constraints["Lambdas"] = Lambdas
   equation_constraints["Alphas"] = Alphas
   equation_constraints["MaxInteractions"] = MaxInteractions
+  equation_constraints["TrainTestSplit"] = 1
 
   with open(f'{foldername}/{equation_name}.json', 'w') as f:
     f.write(str(equation_constraints).replace('\'', '"'))
@@ -93,8 +96,8 @@ for equation in equations:
     #calculate equation and add to training data
     input = data.to_numpy()
     data['target'] = [eq(row) for row in input]
-    # 10% noise
-    data[target_with_noiseVariable] = ff.Noise([eq(row) for row in input], noise_level=0.1) 
+    # 1% noise
+    data[target_with_noiseVariable] = ff.Noise([eq(row) for row in input], noise_level=0.01) 
     
     data["equation_name"] = [equation_name] * size
     data["varied_variable_name"] = [varied_variable_name] * size
@@ -102,7 +105,10 @@ for equation in equations:
     data = data.sort_values(by=[varied_variable_name])
     data = data.reset_index(drop=True)
 
-    for error_function in ['NONE', 'Square','Spike','RampUp','RampDown','ExponentialUp','Normal']:
+    for error_function in ['None', # 'Square'
+      'Spike',
+      # 'RampUp','RampDown','ExponentialUp',
+      'Normal']:
       data_error = data.copy()
       if(error_function == 'Square'):
         data_error[target_with_errorVariable],data_error['error_function'] = ef.Square(data[target_with_noiseVariable],start=size*0.8,end=size,returnErrorFunction=True)
@@ -128,21 +134,21 @@ for equation in equations:
         data_error[target_with_errorVariable],data_error['error_function'] = ef.Normal(data[target_with_noiseVariable],start=size*0.8,end=size,returnErrorFunction=True)
         data_error['target_with_error_without_noise'] = ef.Normal(data['target'],start=size*0.8,end=size)
 
-      if(error_function == 'NONE'):
+      if(error_function == 'None'):
         data_error[target_with_errorVariable] = data[target_with_noiseVariable]
         data_error['target_with_error_without_noise'] = data['target']
 
       derivedConstraint = variable_constraints['monotonicity']
       measuredConstraint = Monotonic(data_error['target'].diff())
       errorConstraint = Monotonic(data_error['target_with_error_without_noise'].diff())
-      detectable = (derivedConstraint != errorConstraint) | (derivedConstraint != measuredConstraint)
+      ConstraintsViolated = (derivedConstraint != errorConstraint) | (derivedConstraint != measuredConstraint)
       
-      print(f"{equation_name.ljust(10)} {varied_variable_name.ljust(8)} {variable_constraints['name'].ljust(8)} {error_function.ljust(14)} " 
-       +f"derived: {derivedConstraint.ljust(10)} measured: {measuredConstraint.ljust(10)} withError: {errorConstraint.ljust(10)} detectable: {detectable}")
-
-      filename = f"{equation_name}_{varied_variable_name}_{error_function}"
-      data_error.to_csv(f"{foldername}/{filename}.csv", index = False)
-      df.loc[i] =[equation_name,filename,varied_variable_name,error_function, detectable]
-      i = i +1
+      if ((ConstraintsViolated ) | (error_function == 'None')):
+        print(f"{equation_name.ljust(10)} {varied_variable_name.ljust(8)} {variable_constraints['name'].ljust(8)} {error_function.ljust(14)} " 
+          +f"derived: {derivedConstraint.ljust(10)} measured: {measuredConstraint.ljust(10)} withError: {errorConstraint.ljust(10)} constraint violated: {ConstraintsViolated}")
+        filename = f"{equation_name}_{varied_variable_name}_{error_function}"
+        data_error.to_csv(f"{foldername}/{filename}.csv", index = False)
+        df.loc[i] =[equation_name,filename,varied_variable_name,error_function, ConstraintsViolated]
+        i = i +1
 
 df.to_csv(f"{foldername}/info/overview.csv", index = False)

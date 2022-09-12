@@ -77,5 +77,5 @@ for maxInteractions in np.unique( df['MaxInteractions']):
 
 cbar_ax.set_ylabel('RMSE')
 cbar_ax.yaxis.set_label_position('right') 
-plt.savefig('gridsearch.png',dpi=600, transparent=True)
+plt.savefig('1.1.2-gridsearch.png',dpi=600, transparent=True)
 plt.show()

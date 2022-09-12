@@ -15,7 +15,7 @@ Alphas = [0,0.5,1]
 MaxInteractions = [2,3]
 
 size = 2000
-foldername = 'data/multivariate_gridsearch'
+foldername = 'data/1.2.1-multivariate_gridsearch'
 
 # take only the equations specified above
 filter = [ np.any( [item['DescriptiveName'].endswith(name) for name in instances] ) for item in ff.FunctionsJson]
@@ -49,5 +49,6 @@ for equation in equations:
   data['equation_name'] = equation_name
   data['varied_variable_name'] = 'None'
 
+
   filename = f"{equation_name}"
-  # data.to_csv(f"{foldername}/{filename}.csv", index = False)
+  data.to_csv(f"{foldername}/{filename}.csv", index = False)
