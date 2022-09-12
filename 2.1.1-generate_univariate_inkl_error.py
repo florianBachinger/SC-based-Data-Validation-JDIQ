@@ -105,9 +105,9 @@ for equation in equations:
     data = data.sort_values(by=[varied_variable_name])
     data = data.reset_index(drop=True)
 
-    for error_function in ['None', # 'Square'
+    for error_function in ['None', 'Square', 
       'Spike',
-      # 'RampUp','RampDown','ExponentialUp',
+      'RampUp','RampDown','ExponentialUp',
       'Normal']:
       data_error = data.copy()
       if(error_function == 'Square'):

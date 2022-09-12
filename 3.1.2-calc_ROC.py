@@ -4,45 +4,49 @@ import Feynman.Functions as ff
 import SyntheticError.DataTransformation as ef
 import Feynman.Constraints as fc
 import matplotlib.pyplot as plt
-
+from ast import literal_eval
 
 data = pd.read_csv('3.1.1_training_error.csv')
 knownInvalidCount = np.sum(data['ConstraintsViolated']==True)
 knownValidCount = np.sum(data['ConstraintsViolated']==False)
 rows_list = []
 
+data['RMSE'] = [literal_eval(x) for x in data['RMSE']]
 
+exceeding_count_threshold = 1
 i = 0
 length = 1000
-for border in np.linspace(np.min(data['RMSE']), np.max(data['RMSE']), length):
+for border in np.linspace(np.min([np.min(x) for x in data['RMSE']]), np.max([np.max(x) for x in data['RMSE']]), length):
   print(f"row {i}/{length}")
-  #under border, no constraints violated
-  true_negatives = data[  (data['RMSE']<border) &
-                                    (data['ConstraintsViolated']==False)
-                                ]
-  num_true_negatives = len(true_negatives)
-  #over border, actual constraints violated
-  true_positives = data[  (data['RMSE']>=border) &
-                                  (data['ConstraintsViolated']==True)
-                              ]
-  num_true_positives = len(true_positives)
-  #over border, no constraints violated
-  false_negatives = data[  (data['RMSE']>=border) &
-                                  (data['ConstraintsViolated']==False)
-                              ]
-  num_false_negatives = len(false_negatives)
-  #under exceeded, actual constraints violated
-  false_positives = data[  (data['RMSE']<border) &
-                                  (data['ConstraintsViolated']==True)
-                              ]
+  true_negatives = 0
+  true_positives = 0
+  false_negatives = 0
+  false_positives = 0
+  for (rowid, row ) in data.iterrows():
+    count_exceeding = np.sum( (row['RMSE']>=border) )
 
-  num_false_positives = len(false_positives)
+    #over border, actual constraints violated
+    if( (count_exceeding >= exceeding_count_threshold) & 
+        (row['ConstraintsViolated']==True)):
+      true_positives = true_positives + 1
 
-  if(len(data)!=(num_true_negatives+num_true_positives+num_false_negatives+num_false_positives)):
-    print('wrong confusion matrix calculation')
+    #all under border, no constraints violated
+    if( (count_exceeding == 0) & 
+        (row['ConstraintsViolated']==False)):
+      true_negatives = true_negatives + 1 
 
-  tPR  = float(num_true_positives)/knownInvalidCount  
-  fPR = 1-(float(num_true_negatives)/knownValidCount)
+    #all under border, actual constraints violated
+    if( (count_exceeding >= exceeding_count_threshold) & 
+        (row['ConstraintsViolated']==False)):
+      false_positives = false_positives + 1
+
+    #over border, no constraints violated
+    if( (count_exceeding == 0) & 
+        (row['ConstraintsViolated']==True)):
+      false_negatives = false_negatives + 1
+
+  tPR  = float(true_positives)/knownInvalidCount  
+  fPR = 1-(float(true_negatives)/knownValidCount)
   if((tPR>1) or (tPR<0)):
     print('PROBLEM1')
   if((fPR>1) or (fPR<0)):
@@ -54,6 +58,7 @@ for border in np.linspace(np.min(data['RMSE']), np.max(data['RMSE']), length):
     'false positive rate' : fPR
   })
   i = i + 1
+
 curves_results = pd.DataFrame(rows_list)               
 curves_results.to_csv('3.1.2-rocCurveResults.csv', index = False)
 
