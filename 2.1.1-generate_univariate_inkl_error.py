@@ -24,8 +24,8 @@ instances = [
 'I.41.16', 
 'I.48.20', 
 'II.6.15a',
-'II.11.27',
-'II.11.28',
+# 'II.11.27',
+# 'II.11.28',
 'II.35.21',
 'III.10.19'
 ]
@@ -97,7 +97,7 @@ for equation in equations:
     input = data.to_numpy()
     data['target'] = [eq(row) for row in input]
     # 1% noise
-    data[target_with_noiseVariable] = ff.Noise([eq(row) for row in input], noise_level=0.01) 
+    data[target_with_noiseVariable] = ff.Noise([eq(row) for row in input], noise_level=0.1) 
     
     data["equation_name"] = [equation_name] * size
     data["varied_variable_name"] = [varied_variable_name] * size

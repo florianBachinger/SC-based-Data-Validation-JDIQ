@@ -16,7 +16,7 @@ font = {'family' : 'normal',
 
 plt.rc('font', **font)
 
-curves_results = pd.read_csv('3.1.2-rocCurveResults.csv')
+curves_results = pd.read_csv('3.1.3-rocCurveResults.csv')
 plt.figure(figsize=(10,8))
 
 # ###################  adapt true positive rate ################### per false positive rate
@@ -42,5 +42,5 @@ plt.ylabel('true positive rate\npredicted invalid and actually invalid')
 plt.plot(np.linspace(0,1,100),np.linspace(0,1,100), c= 'grey', linestyle = '--')
 plt.legend()
 
-plt.savefig('fig/roc.png', transparent = True, dpi = 600)
+plt.savefig('fig/3.1.4-roc.png', transparent = True, dpi = 600)
 plt.show()               
