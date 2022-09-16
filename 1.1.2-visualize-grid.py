@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 import seaborn as sns
 
-df = pd.read_csv('result_univariate.csv')
+df = pd.read_csv('1.1.2-result_univariate.csv')
 
 datasets = np.unique(df['EquationName'])
 lambda_values =  np.unique( df['Lambda'])

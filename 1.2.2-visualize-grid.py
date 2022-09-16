@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 import seaborn as sns
 
-df = pd.read_csv('result_multivariate.csv')
+df = pd.read_csv('1.2.1-result_multivariate.csv')
 
 datasets = np.unique(df['EquationName'])
 lambda_values =  np.unique( df['Lambda'])
@@ -24,6 +24,7 @@ df.loc[df['RMSE_Training'] == -1 ,'RMSE_Training'] = max_training_rmse
 df.loc[df['RMSE_Test'] == -1 ,'RMSE_Test'] = max_test_rmse
 
 df.loc[df['RMSE_Full'] == -1 ,'RMSE_Full'] = max_rmse
+
 
 i = len(df.index)+1
 for dataset in datasets:
