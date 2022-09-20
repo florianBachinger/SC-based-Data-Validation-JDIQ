@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
 
-def Noise(target, noise_level = None):
+def Noise(target, noise_level = None, stdDev = None):
   if( (noise_level == None) | (noise_level == 0)):
     return target
   assert 0 < noise_level < 1, f"Argument '{noise_level=}' out of range"
-
-  stdDev = np.std(target)
+  if( (stdDev == None) ):
+    stdDev = np.std(target)
   noise = np.random.normal(0,stdDev*np.sqrt(noise_level/(1-noise_level)),len(target))
   return target + noise
 
