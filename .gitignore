@@ -131,3 +131,7 @@ dmypy.json
 share
 Scripts
 pyvenv.cfg
+
+
+#for this project
+data/
