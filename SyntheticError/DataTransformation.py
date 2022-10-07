@@ -143,13 +143,13 @@ class Multivariate:
 
   @staticmethod
   def ApplyErrorFunction(error_function_name, data, input_target_name, output_target_name,error_function_variable_name, affected_space,  error_value = None,  returnErrorFunction = False):
-    affected_data = data
     data[error_function_variable_name] = [0] * len(data)
+    mask = np.ones(len(data))
     for shifted_space_dimension in affected_space:
-      affected_data = affected_data[ (shifted_space_dimension['low']<= affected_data[shifted_space_dimension['name']] )
-                                  & (affected_data[shifted_space_dimension['name']] <= shifted_space_dimension['high'])]
+      mask = mask & ((shifted_space_dimension['low']<= data[shifted_space_dimension['name']] )
+                            & (data[shifted_space_dimension['name']] <= shifted_space_dimension['high']))
 
-    if(len(affected_data)==0):
+    if(np.sum(mask)==0):
       raise 'no data affected'
 
     centers = [var['center'] for var in affected_space]
@@ -163,19 +163,19 @@ class Multivariate:
 
 
     if(error_function_name == 'Square'):
-      affected_data[error_function_variable_name] = [1] * len(affected_data)
+      data.loc[mask,error_function_variable_name] = [1] * np.sum(mask)
 
     elif(error_function_name == 'Spike'):
-      X = affected_data[inputs].to_numpy()
+      X = data.loc[mask,inputs].to_numpy()
 
       distance_center = [ np.sqrt(np.sum(np.square(item - centers ))) for item in X ]
       neg_distance = [ val*-1 for val in distance_center ]
-      affected_data[error_function_variable_name] = fn.Normalize01(neg_distance)
+      data.loc[mask,error_function_variable_name] = fn.Normalize01(neg_distance)
       
     elif(error_function_name == 'Normal'):
-      X = affected_data[inputs]
+      X = data.loc[mask,inputs].to_numpy()
       rv = multivariate_normal(centers, np.diag(np.ones(number_of_inputs)))
-      affected_data[error_function_variable_name] = rv.pdf( X)
+      data.loc[mask,error_function_variable_name] = rv.pdf( X)
 
     elif ((error_function_name == 'None') | (error_function_name == None)):
       data[output_target_name] = target 

@@ -59,7 +59,7 @@ data_size = 1000
 filter = [ np.any( [item['DescriptiveName'].endswith(name) for name in instances] ) for item in ff.FunctionsJson]
 equations = np.array(ff.FunctionsJson)[filter]
 
-for equation in equations[5:6]:
+for equation in equations[0:1]:
   number_inputs = len(equation['Variables'])
   #store the original variable order to enable lambda call (position is relevant)
   lambda_variable_order = [var['name'] for var in equation['Variables']]
