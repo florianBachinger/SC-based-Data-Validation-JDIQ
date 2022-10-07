@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import Feynman.Functions as ff
 import Feynman.Constraints as fc
+import random
+random.seed(31415)
+np.random.seed(31415)
 
 target_name = 'target_with_noise'
 instances = [
@@ -13,8 +16,6 @@ instances = [
 'I.41.16', 
 'I.48.20', 
 'II.6.15a',
-'II.11.27',
-'II.11.28',
 'II.35.21',
 'III.10.19'
 ]

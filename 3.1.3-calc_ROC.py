@@ -5,61 +5,46 @@ import SyntheticError.DataTransformation as ef
 import Feynman.Constraints as fc
 import matplotlib.pyplot as plt
 from ast import literal_eval
+from datetime import datetime
 
-data = pd.read_csv('3.1.1_training_error.csv')
-knownInvalidCount = np.sum(data['ConstraintsViolated']==True)
-knownValidCount = np.sum(data['ConstraintsViolated']==False)
-rows_list = []
+data = pd.read_csv('3.1.3_training_error.csv')
 
-data['RMSE'] = [literal_eval(x) for x in data['RMSE']]
-
-exceeding_count_threshold = 1
 i = 0
+border_count = 0
 length = 1000
-for border in np.linspace(np.min([np.min(x) for x in data['RMSE']]), np.max([np.max(x) for x in data['RMSE']]), length):
-  print(f"row {i}/{length}")
-  true_negatives = 0
-  true_positives = 0
-  false_negatives = 0
-  false_positives = 0
-  for (rowid, row ) in data.iterrows():
-    count_exceeding = np.sum( (row['RMSE']>=border) )
 
-    #over border, actual constraints violated
-    if( (count_exceeding >= exceeding_count_threshold) & 
-        (row['ConstraintsViolated']==True)):
-      true_positives = true_positives + 1
+df= pd.DataFrame(columns=['DataSize','ErrorWidthPercentage','NoiseLevelPercentage','ErrorScaling','Border','true positive rate','false positive rate'])
 
-    #all under border, no constraints violated
-    if( (count_exceeding == 0) & 
-        (row['ConstraintsViolated']==False)):
-      true_negatives = true_negatives + 1 
+for border in np.linspace(np.min(data['RMSE']), np.max(data['RMSE']), length):
+  print(f'{datetime.now()} [{border_count}/{length}] {border}')
+  border_count = border_count + 1
+  for data_size in np.unique(data['DataSize']):
+    for error_width_percentage in np.unique(data['ErrorWidthPercentage']):
+      for noise_level_percentage in np.unique(data['NoiseLevelPercentage']):
+        for error_scaling_sigma in np.unique(data['ErrorScaling']):
 
-    #all under border, actual constraints violated
-    if( (count_exceeding >= exceeding_count_threshold) & 
-        (row['ConstraintsViolated']==False)):
-      false_positives = false_positives + 1
+          filtered = data[(
+            (data['DataSize'] == data_size) &
+            (data['ErrorWidthPercentage'] == error_width_percentage) &
+            (data['NoiseLevelPercentage'] == noise_level_percentage) &
+            (data['ErrorScaling'] == error_scaling_sigma) )]
+          
+          if(len(filtered) == 0):
+            continue
+          print(len(filtered))
+          
+          knownInvalidCount = np.sum(filtered['ConstraintsViolated']==True)
+          knownValidCount = np.sum(filtered['ConstraintsViolated']==False)
 
-    #over border, no constraints violated
-    if( (count_exceeding == 0) & 
-        (row['ConstraintsViolated']==True)):
-      false_negatives = false_negatives + 1
+          truePositives = np.sum(((filtered['ConstraintsViolated']==True) & (filtered['RMSE']>=border)))
+          falsePositives = np.sum(((filtered['ConstraintsViolated']==False) & (filtered['RMSE']>=border)))
+          trueNegatives = np.sum(((filtered['ConstraintsViolated']==False) & (filtered['RMSE']<border)))
+          falseNegatives = np.sum(((filtered['ConstraintsViolated']==True) & (filtered['RMSE']<border)))
 
-  tPR  = float(true_positives)/knownInvalidCount  
-  fPR = 1-(float(true_negatives)/knownValidCount)
-  if((tPR>1) or (tPR<0)):
-    print('PROBLEM1')
-  if((fPR>1) or (fPR<0)):
-    print('PROBLEM2')
+          truePositivesRate = (truePositives) / (truePositives + falseNegatives)
+          falsePositivesRate = (falsePositives) / (falsePositives + trueNegatives)
 
-  rows_list.append({
-    'border':border,
-    'true positive rate' : tPR,
-    'false positive rate' : fPR
-  })
-  i = i + 1
+          df.loc[i] =[data_size, error_width_percentage, noise_level_percentage, error_scaling_sigma, border, truePositivesRate, falsePositivesRate]
+          i = i +1
 
-curves_results = pd.DataFrame(rows_list)               
-curves_results.to_csv('3.1.3-rocCurveResults.csv', index = False)
-
-print(f"knownInvalidCount: {knownInvalidCount} knownValidCount:{knownValidCount}")
+df.to_csv('3.1.4-rocCurveResults.csv', index = False)

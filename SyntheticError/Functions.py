@@ -2,7 +2,7 @@ import numpy as np
 import scipy as sp
 
 def Normalize01(x):
-  return (x-min(x))/(max(x)-min(x))
+  return (x-np.min(x))/(np.max(x)-np.min(x))
 
 def Square(length,start=0,end = None):
   if(end==None):
@@ -15,7 +15,6 @@ def Square(length,start=0,end = None):
   errorLen = end-start
   data[start : end] = [1]* errorLen
   return np.array(data,dtype=np.float64)
-
 
 def Spike(length,start=0,end = None):
   if(end==None):
@@ -100,27 +99,12 @@ def Normal(length,start=0,end = None, stddev = 1,mean = 0,sample_start = -3, sam
   data = [0.0]*length
   errorLen = end-start
 
-  PDF_x_sample = np.linspace(sample_start,sample_end,errorLen)
+  if(errorLen == 1):
+    PDF_x_sample = np.array([mean])
+  if(errorLen == 2):
+    PDF_x_sample = np.array([mean,mean])
+  else:
+    PDF_x_sample = np.linspace(sample_start,sample_end,errorLen)
 
-  data[start : end] = Normalize01(NormalPDF(PDF_x_sample,stddev,mean)) 
-  return np.array(data,dtype=np.float64)
-
-
-# i.e. Area under the curve
-# error = Square(2000,1600)
-# print(np.sum(error))
-
-# error = Spike(2000,1600)
-# print(np.sum(error))
-
-# error = RampUp(2000,1600)
-# print(np.sum(error))
-
-# error = RampDown(2000,1600)
-# print(np.sum(error))
-
-# error = ExponentialUp(2000,1600)
-# print(np.sum(error))
-
-# error = Normal(2000,1600)
-# print(np.sum(error))
+  data[start : end] = NormalPDF(PDF_x_sample,stddev,mean)
+  return Normalize01(np.array(data,dtype=np.float64))

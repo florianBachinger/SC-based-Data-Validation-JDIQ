@@ -8,9 +8,6 @@ import matplotlib.pyplot as plt
 import glob
 import os
 
-windowsize = 200
-stepwidth = 100
-
 datafolder = 'data/3.1.1-univariate_error_results'
 overview = pd.read_csv(f'data/2.1.1-univariate_error/info/overview.csv')
 results = pd.read_csv('3.1.1-result_univariate_error.csv')
@@ -23,7 +20,7 @@ def RMSE(target, estimate):
   mse = np.average((target-estimate) * (target-estimate))
   return np.sqrt(mse)
 
-df = pd.DataFrame(columns=['filename','equation_name','varied_variable_name','errorfunction','RMSE','ConstraintsViolated'])
+df = pd.DataFrame(columns=['filename','equation_name','varied_variable_name','errorfunction','RMSE','ConstraintsViolated','DataSize','ErrorWidthPercentage','NoiseLevelPercentage','ErrorScaling'])
 i = 0
 for file in glob.glob(f'{datafolder}/*.csv'):
   data = pd.read_csv(file)
@@ -36,19 +33,14 @@ for file in glob.glob(f'{datafolder}/*.csv'):
   scaled_target = Scale(target,min,max)
   scaled_prediction = Scale(prediction,min,max)
 
-  RMSE_areas = []
 
-  for index in range(int(data_length/stepwidth)):
-    start = index * stepwidth
-    stop = ((index + 1) * stepwidth)+windowsize
-    if stop > data_length:
-      stop = data_length - 1 
-    if(start!=stop):
-      target_selection = scaled_target[start:stop]
-      prediction_selection = scaled_prediction[start:stop]
-      RMSE_areas.append(RMSE(target_selection,prediction_selection))
+  rmse = RMSE(scaled_target,scaled_prediction)
   
-  filename =  os.path.basename(file)
+  result_filename_withExtension =  os.path.basename(file)
+  result_filename = os.path.splitext(result_filename_withExtension)[0]
+
+  filename = result_filename.replace('_d4_i3_l1E-06_a0','')
+
   equation_name = data['equation_name'][0]
   varied_variable_name = data['varied_variable_name'][0]
   if '_' in varied_variable_name:
@@ -56,15 +48,18 @@ for file in glob.glob(f'{datafolder}/*.csv'):
   else:
     errorfunction = filename.split('_')[2]
 
-  filtered = overview[((overview['EquationName'] ==equation_name) & (overview['Variable'] ==varied_variable_name)
-            & (overview['ErrorFunction'] ==errorfunction))]
+  filtered = overview[overview["FileName"] == filename]
 
   if(len(filtered)!=1):
      raise 'error'
   ConstraintsViolated = filtered['ConstraintsViolated'].values[0]
-  df.loc[i] =[equation_name,filename,varied_variable_name,errorfunction,str(RMSE_areas), ConstraintsViolated]
+  DataSize = filtered['DataSize'].values[0]
+  ErrorWidthPercentage = filtered['ErrorWidthPercentage'].values[0]
+  NoiseLevelPercentage = filtered['NoiseLevelPercentage'].values[0]
+  ErrorScaling = filtered['ErrorScaling'].values[0]
+  df.loc[i] =[equation_name,filename,varied_variable_name,errorfunction,rmse, ConstraintsViolated,DataSize,ErrorWidthPercentage,NoiseLevelPercentage,ErrorScaling]
   i = i +1
   
-df.to_csv('3.1.1_training_error.csv')
+df.to_csv('3.1.3_training_error.csv')
 
 

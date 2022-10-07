@@ -1,3 +1,4 @@
+from calendar import c
 import numpy as np
 import pandas as pd
 import Feynman.Functions as ff
@@ -68,6 +69,7 @@ for equation in equations:
   equation_name = equation['EquationName']
   equation_constraints = np.array(fc.constraints)[[constraint['EquationName'] == equation_name for constraint in fc.constraints]][0]
   
+  equation_constraints["AllowedInputs"] = "only_varied"
   equation_constraints["TargetVariable"] = target_variable
   equation_constraints["Degrees"] = Degrees
   equation_constraints["Lambdas"] = Lambdas
@@ -79,21 +81,19 @@ for equation in equations:
     f.write(str(equation_constraints).replace('\'', '"'))
 
   for current_variable in equation['Variables']:
-    for data_size in [500,2000]:
-      for error_width_percentage in [0.01, 0.05, 0.1, 0.15, 0.2]:
-        for noise_level_percentage in [0.01, 0.05, 0.1]:
-          for error_scaling_sigma in [1, 2, 3]:
+    for data_size in [50, 100, 200]:
+      for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
+        for noise_level_percentage in [0.01, 0.02, 0.03, 0.05, 0.1]:
+          for error_scaling_sigma in [0.5, 1, 1.5, 2, 3]:
             # add metadata
             data = pd.DataFrame()
 
             #extract data
             varied_variable_name = current_variable['name']
             variable_constraints = np.array(equation_constraints['Constraints'])[[ ((var_constraint['name'] == varied_variable_name) & (var_constraint['order_derivative'] == 1)) for var_constraint in equation_constraints['Constraints']]][0]
-            data["equation_name"] = [equation_name] * data_size
 
             # add uniform variable
             data[varied_variable_name] = np.random.uniform(current_variable['low'], current_variable['high'],data_size )
-            data["varied_variable_name"] = [varied_variable_name] * data_size
 
             # all variables except the current one are set to their average value
             other_variables = [ var for var in equation['Variables'] if (var['name']!=varied_variable_name) ]
@@ -101,19 +101,25 @@ for equation in equations:
             for other in other_variables:
               data[other['name']] = [((other['low']))] * data_size
             
-            # reorder dataframe to fit lambda of equation
+            # REFILTER and reorder dataframe to fit lambda of equation
             generated_variables_names.append([var['name'] for var in other_variables])
             data = data[lambda_variable_order]
 
             #calculate equation and add to training data
             input = data.to_numpy()
             data[target_without_noiseVariable] = [eq(row) for row in input]
+            
+            # add info fields 
+            data["varied_variable_name"] = [varied_variable_name] * data_size
+            data["equation_name"] = [equation_name] * data_size
 
             #calculate error numbers
             sigma = np.std(data[target_without_noiseVariable])
             error_value  = sigma * error_scaling_sigma
-            error_length = int(data_size) * error_width_percentage
-            error_start = random.randint(0, data_size - error_length - 1 )
+            error_length = int(data_size * error_width_percentage)
+            if(error_length == 0):
+              continue
+            error_start = random.randint(5, data_size - error_length - 5 )
             error_end = error_start+ error_length
 
             #add noise
@@ -136,7 +142,7 @@ for equation in equations:
 
               print(f"{equation_name.ljust(10)} {varied_variable_name.ljust(8)} {error_function.ljust(14)} {data_size} {error_width_percentage} {noise_level_percentage} {error_scaling_sigma}" )
 
-              filename = f"{equation_name}_{varied_variable_name}_{error_function}_s{data_size}_n{noise_level_percentage}_es{error_scaling_sigma}_ew{error_width_percentage}"
+              filename = f"{equation_name}_{varied_variable_name}_s{data_size}_n{noise_level_percentage}_es{error_scaling_sigma}_ew{error_width_percentage}_{error_function}"
               data_error.to_csv(f"{foldername}/{filename}.csv", index = False)
               df.loc[i] =[equation_name,filename,varied_variable_name,error_function, (error_function != 'None'), data_size,error_width_percentage, noise_level_percentage,error_scaling_sigma]
               i = i +1
