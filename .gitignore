@@ -134,5 +134,8 @@ pyvenv.cfg
 
 
 #for this project
+.vs
 data/
 fig/*/
+bin/
+obj/
