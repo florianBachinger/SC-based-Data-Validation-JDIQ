@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
-import Feynman.Functions as ff
-import Feynman.Constraints as fc
+import shared_packages.Feynman.Functions as ff
+import shared_packages.Feynman.Constraints as fc
 import random
 random.seed(31415)
 np.random.seed(31415)
+
+# generates the training data for the gridseach
+# specifies the gridsearch space investigated by the runner
 
 target_name = 'target_with_noise'
 instances = [
@@ -26,7 +29,7 @@ Alphas = [0,0.5,1]
 MaxInteractions = [2,3]
 
 size = 2000
-foldername = 'data/1.1.1-univariate_gridsearch'
+foldername = 'data/univariate/1_gridsearch'
 
 # take only the equations specified above
 filter = [ np.any( [item['DescriptiveName'].endswith(name) for name in instances] ) for item in ff.FunctionsJson]
@@ -94,4 +97,4 @@ for equation in equations:
     ]
     df_row = df_row + 1
 
-df.to_csv(f'{foldername}/info/info.csv')
+df.to_csv(f'{foldername}/_info.csv')
