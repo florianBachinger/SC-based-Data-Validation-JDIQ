@@ -8,7 +8,7 @@ random.seed(31415)
 np.random.seed(31415)
 
 size = 2000
-foldername = 'data/2.1.1-univariate_error'
+foldername = 'data/2.2.1-multivariate_error'
 
 Degrees = [5]
 Lambdas = [10**-3]
@@ -40,11 +40,11 @@ filter = [ np.any( [item['DescriptiveName'].endswith(name) for name in instances
 equations = np.array(ff.FunctionsJson)[filter]
 
 # perpare one meta dataset with all relevant information
-df = pd.DataFrame( columns = ['EquationName','FileName','Variable', 'ErrorFunction', 'ConstraintsViolated'])
+df = pd.DataFrame( columns = ['EquationName','FileName','ErrorFunction', 'ConstraintsViolated','DataSize','ErrorWidthPercentage','NoiseLevelPercentage','ErrorScaling'])
 i = 0 
 
 # for each target equation
-for equation in equations[5:6]:
+for equation in equations:
   number_inputs = len(equation['Variables'])
   #store the original variable order to enable lambda call (position is relevant)
   lambda_variable_order = [var['name'] for var in equation['Variables']]
@@ -63,10 +63,10 @@ for equation in equations[5:6]:
   with open(f'{foldername}/{equation_name}.json', 'w') as f:
     f.write(str(equation_constraints).replace('\'', '"'))
 
-  for data_size in [1000]:
-      for error_width_percentage in [0.125]:
-        for noise_level_percentage in [0.01]:
-          for error_scaling_sigma in [0.5]:
+  for data_size in [200, 500,]:
+    for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
+      for noise_level_percentage in [0.01, 0.02, 0.03, 0.05, 0.1]:
+        for error_scaling_sigma in [0.5, 1, 1.5, 2, 3]:
             
             #generate uniform random input space
             X = np.random.uniform([var['low'] for var in equation['Variables']], [var['high'] for var in equation['Variables']], (data_size,number_inputs))
@@ -103,20 +103,19 @@ for equation in equations[5:6]:
 
               data_error = mv.ApplyErrorFunction(error_function_name = error_function
                                           ,data = data_error
-                                          ,input_target_name = target_variable
+                                          ,input_target_name = target_with_noiseVariable
                                           ,output_target_name = target_with_errorVariable
                                           ,error_function_variable_name = 'error_function'
                                           ,affected_space = shifted_space
                                           ,error_value = sigma
                                           ,returnErrorFunction=True)
-              data_error[target_with_error_without_noise] = data[target_without_noiseVariable] + (data_error['error_function'] * sigma)
 
-              # print(f"{equation_name.ljust(10)} {varied_variable_name.ljust(8)} {error_function.ljust(14)} {data_size} {error_width_percentage} {noise_level_percentage} {error_scaling_sigma}" )
+              print(f"{equation_name.ljust(10)} {error_function.ljust(14)} {data_size} {error_width_percentage} {noise_level_percentage} {error_scaling_sigma}" )
 
-              # filename = f"{equation_name}_{varied_variable_name}_s{data_size}_n{noise_level_percentage}_es{error_scaling_sigma}_ew{error_width_percentage}_{error_function}"
-              # data_error.to_csv(f"{foldername}/{filename}.csv", index = False)
-              # df.loc[i] =[equation_name,filename,varied_variable_name,error_function, (error_function != 'None'), data_size,error_width_percentage, noise_level_percentage,error_scaling_sigma]
-              # i = i +1
+              filename = f"{equation_name}_s{data_size}_n{noise_level_percentage}_es{error_scaling_sigma}_ew{error_width_percentage}_{error_function}"
+              data_error.to_csv(f"{foldername}/{filename}.csv", index = False)
+              df.loc[i] =[equation_name,filename,error_function, (error_function != 'None'), data_size,error_width_percentage, noise_level_percentage,error_scaling_sigma]
+              i = i +1
 
 
 df.to_csv(f"{foldername}/info/overview.csv", index = False)

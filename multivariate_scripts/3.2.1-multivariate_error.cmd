@@ -1,0 +1,1 @@
+D:\src\jrz-symreg\Miba\src-SCPR_Console\SCPRRunner\SCPRRunner.Console\bin\Release\net6.0\SCPRRunner.Console.Gridsearch.exe D:\src\SC-DataValidation-Datasets\3.2.1-result_multivariate_error.csv D:\src\SC-DataValidation-Datasets\data\2.2.1-multivariate_error D:\src\SC-DataValidation-Datasets\data\3.2.1-multivariate_error_results 20
