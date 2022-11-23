@@ -1,1 +1,0 @@
-D:\src\jrz-symreg\Miba\src-SCPR_Console\SCPRRunner\SCPRRunner.Console\bin\Release\net6.0\SCPRRunner.Console.Gridsearch.exe D:\src\SC-DataValidation-Datasets\3.1.1-result_univariate_error.csv D:\src\SC-DataValidation-Datasets\data\2.1.1-univariate_error D:\src\SC-DataValidation-Datasets\data\3.1.1-univariate_error_results 20

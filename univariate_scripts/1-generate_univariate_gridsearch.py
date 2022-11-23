@@ -3,11 +3,15 @@ import pandas as pd
 import shared_packages.Feynman.Functions as ff
 import shared_packages.Feynman.Constraints as fc
 import random
+from os.path import exists
+
 random.seed(31415)
 np.random.seed(31415)
 
 # generates the training data for the gridseach
 # specifies the gridsearch space investigated by the runner
+
+
 
 target_name = 'target_with_noise'
 instances = [
@@ -30,6 +34,11 @@ MaxInteractions = [2,3]
 
 size = 2000
 foldername = 'data/univariate/1_gridsearch'
+info_file = f'{foldername}/_info.csv';
+result_file = f'data/univariate/2_gridsearch_results/_results.csv'
+if(exists(result_file)):
+  message = f'every entry in "{result_file}" will not be retrained even if data changed, consider this'
+  raise Exception(message)
 
 # take only the equations specified above
 filter = [ np.any( [item['DescriptiveName'].endswith(name) for name in instances] ) for item in ff.FunctionsJson]
@@ -53,6 +62,7 @@ for equation in equations:
   equation_constraints["Alphas"] = Alphas
   equation_constraints["MaxInteractions"] = MaxInteractions
   equation_constraints["TrainTestSplit"] = 0.8
+  equation_constraints["AllowedInputs"] = "only_varied"
 
   with open(f'{foldername}/{equation_name}.json', 'w') as f:
     f.write(str(equation_constraints).replace('\'', '"'))
@@ -97,4 +107,4 @@ for equation in equations:
     ]
     df_row = df_row + 1
 
-df.to_csv(f'{foldername}/_info.csv')
+df.to_csv(info_file)

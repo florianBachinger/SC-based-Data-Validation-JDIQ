@@ -135,7 +135,24 @@ pyvenv.cfg
 
 #for this project
 .vs
-data/
-fig/*/
 bin/
 obj/
+
+figures/univariate/4.1_datasets_with_error/
+figures/univariate/6.1-training_results/
+figures/univariate/7.1-IndividualRocCurves/
+
+figures/multivariate/4.1_datasets_with_error/
+figures/multivariate/6.1-training_results/
+figures/multivariate/7.1-IndividualRocCurves/
+
+
+data/univariate/1_gridsearch/
+data/univariate/2_gridsearch_results/
+data/univariate/4_datasets_with_error/
+data/univariate/5_validation_model_results/
+
+data/multivariate/1_gridsearch/
+data/multivariate/2_gridsearch_results/
+data/multivariate/4_datasets_with_error/
+data/multivariate/5_validation_model_results/
