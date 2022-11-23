@@ -1,0 +1,1 @@
+..\shared_packages\SCPRRunner\SCPRRunner.Console\bin\Release\net6.0\SCPRRunner.Console.Gridsearch.exe ..\data\multivariate\2_gridsearch_results\_results.csv ..\data\multivariate\1_gridsearch ..\data\multivariate\2_gridsearch_results 40

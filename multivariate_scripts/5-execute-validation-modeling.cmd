@@ -1,0 +1,1 @@
+..\shared_packages\SCPRRunner\SCPRRunner.Console\bin\Release\net6.0\SCPRRunner.Console.Gridsearch.exe ..\data\multivariate\5_validation_model_results\_results.csv ..\data\multivariate\4_datasets_with_error ..\data\multivariate\5_validation_model_results 40
