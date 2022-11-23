@@ -6,6 +6,18 @@ using ShapeConstrainedPolynomialRegression;
 using static ShapeConstrainedPolynomialRegression.Regression;
 using ConstraintTuple = System.Tuple<string, int, double, int, double[], double[]>;
 
+int argumentIndex = 0;
+foreach(var argument in Environment.GetCommandLineArgs()) {
+  Console.WriteLine($"argument[{argumentIndex}]: {argument}");
+  argumentIndex++;
+}
+
+Console.WriteLine("Expected Argument Order: ");
+Console.WriteLine("argument[1]: resulting csv file location");
+Console.WriteLine("argument[2]: training data folder for individual models");
+Console.WriteLine("argument[3]: resulting data folder for individual model reports");
+Console.WriteLine("argument[4]: int degree of parallelism");
+
 //prepare data sources and result path
 string mlResultFile = Environment.GetCommandLineArgs()[1];
 string dataFolder = Environment.GetCommandLineArgs()[2];
@@ -13,9 +25,10 @@ string resultFolder = Environment.GetCommandLineArgs()[3];
 int degreeParallelism = int.Parse(Environment.GetCommandLineArgs()[4]);
 var file_write_lock = new object();
 
+
 //read previous results
 List<SCPRResult> results;
-using (var reader = new StreamReader(mlResultFile))
+using (var reader = new StreamReader(mlResultFile, new FileStreamOptions() { Access = FileAccess.ReadWrite, Mode = FileMode.OpenOrCreate }))
 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
   results = csv.GetRecords<SCPRResult>().ToList();
 }
@@ -207,15 +220,19 @@ bool TrainModel(double[,] X, double[] y, string[] inputs, string target, int deg
 
 
 
-void WriteAppend(string filePath, object record) {
+void WriteAppend<T>(string filePath, T record) {
   // This text is added only once to the file.
   if (!File.Exists(filePath)) {
     File.Create(filePath);
   } else {
     // Create a file to write to.
     lock (file_write_lock) {
-      using (StreamWriter sw = File.AppendText(filePath)) {
+      using (StreamWriter sw = new StreamWriter(filePath, append: true)) {
         using (var csv = new CsvWriter(sw, CultureInfo.InvariantCulture)) {
+          if ((new FileInfo(filePath)).Length == 0) {
+            csv.WriteHeader<T>();
+            csv.NextRecord();
+          }
           csv.WriteRecord(record);
           csv.NextRecord();
           sw.Flush();
