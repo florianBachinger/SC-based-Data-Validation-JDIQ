@@ -1,16 +1,16 @@
 import numpy as np
 import pandas as pd
-import Feynman.Functions as ff
-import SyntheticError.DataTransformation as ef
-import Feynman.Constraints as fc
+import shared_packages.Feynman.Functions as ff
+import shared_packages.SyntheticError.DataTransformation as ef
+import shared_packages.Feynman.Constraints as fc
 import matplotlib.pyplot as plt
 
 import glob
 import os
 
-datafolder = 'data/3.2.1-multivariate_error_results'
-overview = pd.read_csv(f'data/2.2.1-multivariate_error/info/overview.csv')
-results = pd.read_csv('3.2.1-result_multivariate_error.csv')
+datafolder = 'data/multivariate/5_validation_model_results'
+overview = pd.read_csv(f'data/multivariate/4_datasets_with_error/_info.csv')
+results = pd.read_csv('data/multivariate/5_validation_model_results/_results.csv')
 
 def Scale(val, minimum, maximum):
   range = maximum - minimum
@@ -56,6 +56,6 @@ for file in glob.glob(f'{datafolder}/*.csv'):
   df.loc[i] =[equation_name,filename,errorfunction,rmse, ConstraintsViolated,DataSize,ErrorWidthPercentage,NoiseLevelPercentage,ErrorScaling]
   i = i +1
   
-df.to_csv('3.2.3_training_error.csv')
+df.to_csv('data/multivariate/6-training_error.csv')
 
 

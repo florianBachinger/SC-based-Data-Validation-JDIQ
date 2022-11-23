@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-import Feynman.Functions as ff
-import SyntheticError.DataTransformation as ef
-import Feynman.Constraints as fc
+import shared_packages.Feynman.Functions as ff
+import shared_packages.SyntheticError.DataTransformation as ef
+import shared_packages.Feynman.Constraints as fc
 import matplotlib.pyplot as plt
 from ast import literal_eval
 from datetime import datetime
@@ -47,4 +47,4 @@ for border in np.linspace(np.min(data['RMSE']), np.max(data['RMSE']), length):
           df.loc[i] =[data_size, error_width_percentage, noise_level_percentage, error_scaling_sigma, border, truePositivesRate, falsePositivesRate]
           i = i +1
 
-df.to_csv('3.2.4-rocCurveResults.csv', index = False)
+df.to_csv('data/multivariate/7-rocCurveResults.csv', index = False)

@@ -20,7 +20,7 @@ font = {'family' : 'normal',
 
 plt.rc('font', **font)
 
-curves_results = pd.read_csv('3.2.4-rocCurveResults.csv')
+curves_results = pd.read_csv('data/multivariate/7-rocCurveResults.csv')
 
 # perpare one meta dataset with all relevant information
 df = pd.DataFrame(columns=['DataSize','ErrorWidthPercentage','NoiseLevelPercentage','ErrorScaling','AUC'])
@@ -60,4 +60,4 @@ for data_size in np.unique(curves_results['DataSize']):
         df.loc[i] =[data_size,error_width_percentage,noise_level_percentage,error_scaling_sigma, area]
         i = i +1
 
-df.to_csv('3.2.5_AUC_comparison.csv')
+df.to_csv('data/multivariate/8-AUC_comparison.csv')

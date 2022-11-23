@@ -21,7 +21,7 @@ font = {'family' : 'normal',
 plt.rc('font', **font)
 
 
-df = pd.read_csv('3.2.5_AUC_comparison.csv')
+df = pd.read_csv('data/multivariate/8-AUC_comparison.csv')
 df = df[df['DataSize'] == 500]
   
 
