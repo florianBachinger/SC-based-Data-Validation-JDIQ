@@ -34,6 +34,8 @@ def Spike(length,start=0,end = None):
     error = np.append(error,rampdown)
   else:
     error = np.append(rampup,rampdown)
+  if( not any( li>0 for li in error) ):
+    error[ int(len(error)/2)] = 1
 
   data[start : end] = error
   return np.array(data,dtype=np.float64)

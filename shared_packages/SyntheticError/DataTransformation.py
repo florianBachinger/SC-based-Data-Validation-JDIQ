@@ -1,5 +1,5 @@
 import numpy as np
-import SyntheticError.Functions as fn
+import shared_packages.SyntheticError.Functions as fn
 import random
 from scipy.stats import multivariate_normal
 
