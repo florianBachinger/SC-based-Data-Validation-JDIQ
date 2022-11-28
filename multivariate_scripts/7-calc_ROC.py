@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from ast import literal_eval
 from datetime import datetime
 
-data = pd.read_csv('3.2.3_training_error.csv')
+data = pd.read_csv('data/multivariate/6-training_error.csv')
 
 i = 0
 border_count = 0
@@ -31,7 +31,7 @@ for border in np.linspace(np.min(data['RMSE']), np.max(data['RMSE']), length):
           
           if(len(filtered) == 0):
             continue
-          print(len(filtered))
+          # print(len(filtered))
           
           knownInvalidCount = np.sum(filtered['ConstraintsViolated']==True)
           knownValidCount = np.sum(filtered['ConstraintsViolated']==False)

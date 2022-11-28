@@ -22,7 +22,12 @@ def RMSE(target, estimate):
 
 df = pd.DataFrame(columns=['filename','equation_name','errorfunction','RMSE','ConstraintsViolated','DataSize','ErrorWidthPercentage','NoiseLevelPercentage','ErrorScaling'])
 i = 0
-for file in glob.glob(f'{datafolder}/*.csv'):
+files = glob.glob(f'{datafolder}/*.csv')
+for file in files:
+  print(f'[{i}/{len(files)}] {file}')
+  if( "\_results.csv" in file ):
+    continue
+
   data = pd.read_csv(file)
   data_length = len(data)
   target =data['target_with_error']
@@ -39,7 +44,7 @@ for file in glob.glob(f'{datafolder}/*.csv'):
   result_filename_withExtension =  os.path.basename(file)
   result_filename = os.path.splitext(result_filename_withExtension)[0]
 
-  filename = result_filename.replace('_d5_i3_l0,001_a0,5','')
+  filename = result_filename.replace('_d5_i3_l0,0001_a0,5','')
 
   equation_name = data['equation_name'][0]
   errorfunction = filename.split('_')[2]
