@@ -8,19 +8,18 @@ result_figure = 'figures/univariate/1-gridsearch_results.png'
 df = pd.read_csv(result_file)
 df = df[df['Lambda']<1]
 
-#result 
-#                                      RMSE_Full
-#Lambda  Degree Alpha MaxInteractions
-#0.00010 7      0.5   2                 4.188515
-#                     3                 4.188515
-#               1.0   2                 4.188530
-#                     3                 4.188530
-#               0.0   2                 4.188531
-#                     3                 4.188531
-#0.00001 7      1.0   2                 4.188572
-#                     3                 4.188572
-#               0.5   2                 4.188579
-#                     3                 4.188579
+#                                       RMSE_Full
+# Lambda  Degree Alpha MaxInteractions
+# 0.00010 7      0.0   2                 4.143952
+#                      3                 4.143952
+#                0.5   2                 4.143963
+#                      3                 4.143963
+# 0.00001 7      1.0   2                 4.144002
+#                      3                 4.144002
+# 0.00010 7      1.0   2                 4.144007
+#                      3                 4.144007
+# 0.00001 7      0.5   2                 4.144009
+#                      3                 4.144009
 
 datasets = np.unique(df['EquationName'])
 lambda_values =  np.unique( df['Lambda'])

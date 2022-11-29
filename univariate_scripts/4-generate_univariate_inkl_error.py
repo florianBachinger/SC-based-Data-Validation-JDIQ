@@ -13,11 +13,10 @@ np.random.seed(31415)
 
 # generates datasets with different types of errors (and also one dataset without an error)
 
-
 # best gridsearch results
 Degrees = [7]
 Lambdas = [0.00010]
-Alphas = [0.5]
+Alphas = [0]
 MaxInteractions = [2]
 
 foldername = 'data/univariate/4_datasets_with_error'
