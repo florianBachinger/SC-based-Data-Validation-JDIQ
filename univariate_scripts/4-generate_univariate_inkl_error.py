@@ -94,17 +94,20 @@ for equation in equations:
   with open(f'{foldername}/{equation_name}.json', 'w') as f:
     f.write(str(equation_constraints).replace('\'', '"'))
 
-  for current_variable in equation['Variables']:
-    for data_size in [50, 100]:
-      for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
-        for noise_level_percentage in [0.01, 0.02, 0.03, 0.05, 0.1]:
-          for error_scaling_sigma in [0.5, 1, 1.5 ]:
+  for data_size in [50, 100]:
+    for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
+      for noise_level_percentage in [0.01, 0.02, 0.03, 0.05, 0.1]:
+        for error_scaling_sigma in [0.5, 1, 1.5 ]:
+          for current_variable in equation['Variables']:
             # add metadata
             data = pd.DataFrame()
 
             #extract data
             varied_variable_name = current_variable['name']
-            variable_constraints = np.array(equation_constraints['Constraints'])[[ ((var_constraint['name'] == varied_variable_name) & (var_constraint['order_derivative'] == 1)) for var_constraint in equation_constraints['Constraints']]][0]
+            variable_constraints = [var_constraint for var_constraint in equation_constraints['Constraints'] if ((var_constraint['name'] == varied_variable_name) and (var_constraint['monotonicity'] != "None") ) ]
+
+            if(len(variable_constraints)== 0):
+              continue
 
             # add uniform variable
             data[varied_variable_name] = np.random.uniform(current_variable['low'], current_variable['high'],data_size )
