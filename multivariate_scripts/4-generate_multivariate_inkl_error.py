@@ -88,7 +88,7 @@ for equation in equations:
   for data_size in [200, 500,]:
     for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
       for noise_level_percentage in [0.01, 0.02, 0.03, 0.05, 0.1]:
-        for error_scaling_sigma in [0.5, 1, 1.5, 2, 3]:
+        for error_scaling_sigma in [0.5, 1, 1.5]:
             
             #generate uniform random input space
             X = np.random.uniform([var['low'] for var in equation['Variables']], [var['high'] for var in equation['Variables']], (data_size,number_inputs))
