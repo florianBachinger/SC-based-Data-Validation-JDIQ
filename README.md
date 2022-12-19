@@ -12,25 +12,26 @@ The Feynman Equations: https://space.mit.edu/home/tegmark/aifeynman.html.
 Our analysis of the shape properties of each Feynman equation: https://github.com/florianBachinger/FeynmanEquations-Python
 
 
-## replication of analysis
+## Replication of analysis
 Our results can be further investigated without repeating the grid search and model training, which both require a Mosek license and installation. Simply extract the data from `data/[uni/multi]variate/*.zip` and skip the scripts `/[uni/multi]variate/1-generate-multivariate-gridsearch.py`, `/[uni/multi]variate/2-execute-gridsearch.cmd`, `/[uni/multi]variate/4-generate_multivariate_inkl_error`, `/[uni/multi]variate/5-execute-validation-modeling.cmd`.
 
 The scripts `/[uni/multi]variate/99-*` provide analysis and figures for all or individual datasets for debugging or in-depth analysis. 
 
 
-## replication of experiments
+## Replication of experiments
 All scripts in this project are executed from the context of this root folder (the location of this README.md). 
 All relative paths are defined from this location. All python scripts are executed from this context.
 
-### prerequisites
+### Prerequisites
 1. obtain a Mosek solver license (https://www.mosek.com/) 
 1. install Mosek 9.2.49 (alternatively, upgrade the NuGet dependency in `/shared_packages/SCPRRunner/`)
 1. install the python dependencies as specified by pip freeze in `pip-requirements.txt` (preferably a local environment with virtualenv) 
 1. build a release version of the runner application in the default `/shared_packages/SCPRRunner/bin/Release/net6.0/`
 
-### repeat univariate experiments
+### Repeat univariate experiments
 1. execute the python and cmd scripts of the folder `/univariate_scripts/` in order
 
 
-### repeat multivariate experiments
-1. execute the python and cmd scripts of the folder `/univariate_scripts/` in order
+### Repeat multivariate experiments
+1. execute the python and cmd scripts of the folder `/multivariate_scripts/` in order
+
