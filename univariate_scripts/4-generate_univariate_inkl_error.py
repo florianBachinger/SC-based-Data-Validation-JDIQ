@@ -104,7 +104,7 @@ for equation in equations:
 
             #extract data
             varied_variable_name = current_variable['name']
-            variable_constraints = [var_constraint for var_constraint in equation_constraints['Constraints'] if ((var_constraint['name'] == varied_variable_name) and (var_constraint['monotonicity'] != "None") ) ]
+            variable_constraints = [var_constraint for var_constraint in equation_constraints['Constraints'] if ((var_constraint['name'] == varied_variable_name) and (var_constraint['descriptor'] != "None") ) ]
 
             if(len(variable_constraints)== 0):
               continue

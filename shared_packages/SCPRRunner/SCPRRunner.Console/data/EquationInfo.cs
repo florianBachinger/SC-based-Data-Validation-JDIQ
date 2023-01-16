@@ -15,7 +15,7 @@
   public class ConstraintInfo {
     public string name { get; set; }
     public int order_derivative { get; set; }
-    public string monotonicity { get; set; }
+    public string descriptor { get; set; }
     public string derivative { get; set; }
     public string derivative_lambda { get; set; }
   }

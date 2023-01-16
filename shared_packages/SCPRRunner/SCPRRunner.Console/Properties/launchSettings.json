@@ -2,7 +2,7 @@
   "profiles": {
     "SCPRRunner.Console.Gridsearch": {
       "commandName": "Project",
-      "commandLineArgs": "D:\\src\\SC-DataValidation-Datasets\\data\\multivariate\\2_gridsearch_results\\_results.csv D:\\src\\SC-DataValidation-Datasets\\data\\multivariate\\1_gridsearch  D:\\src\\SC-DataValidation-Datasets\\data\\multivariate\\2_gridsearch_results 1"
+      "commandLineArgs": "D:\\src\\documents\\Publications\\2021\\Bachinger_DataValidation\\data\\showcase\\results\\result.csv D:\\src\\documents\\Publications\\2021\\Bachinger_DataValidation\\data\\showcase\\  D:\\src\\documents\\Publications\\2021\\Bachinger_DataValidation\\data\\showcase\\ 1"
     }
   }
 }

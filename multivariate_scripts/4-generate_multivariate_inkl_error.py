@@ -9,22 +9,22 @@ import os
 random.seed(31415)
 np.random.seed(31415)
 
-#                                        RMSE_Full
-# Lambda   Degree Alpha MaxInteractions
-# 0.000100 5      1.0   3                 7.681679
-#                 0.5   3                 7.681945
-# 0.001000 5      0.0   3                 7.682225
-# 0.000100 5      0.0   3                 7.682296
-# 0.000010 5      1.0   3                 7.682344
-#                 0.5   3                 7.682384
-#                 0.0   3                 7.682425
-# 0.000001 5      1.0   3                 7.682431
-#                 0.5   3                 7.682435
-#                 0.0   3                 7.682440
+#                                            RMSE_Full
+# Lambda       Degree Alpha MaxInteractions
+# 1.000000e-04 5      0.5   3                 7.734040
+#                     1.0   3                 7.734042
+#                     0.0   3                 7.734071
+# 1.000000e-05 5      1.0   3                 7.734115
+#                     0.5   3                 7.734120
+#                     0.0   3                 7.734126
+# 1.000000e-06 5      1.0   3                 7.734131
+#                     0.5   3                 7.734132
+#                     0.0   3                 7.734132
+# 1.000000e-07 5      0.0   3                 7.734133
 
 Degrees = [5]
-Lambdas = [0.000100]
-Alphas = [1]
+Lambdas = [0.0000100]
+Alphas = [0.5]
 MaxInteractions = [3]
 
 foldername = 'data/multivariate/4_datasets_with_error'

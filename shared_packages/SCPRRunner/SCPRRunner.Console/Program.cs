@@ -298,27 +298,30 @@ IEnumerable<ConstraintTuple> CreateConstraint(EquationInfo equationInfo, string[
     var input_name = constraint.name;
     var order_derivative = constraint.order_derivative;
 
-    if (constraint.monotonicity == "increasing")
+    if (constraint.descriptor.Contains("increasing"))
       yield return Tuple.Create(input_name,
                     order_derivative,
                     0.0,                    // lowest function value
                     1,                      // highest function value
                     (double[])lb.Clone(),   // for the full input space
                     (double[])ub.Clone());  // for the full input space
-    if (constraint.monotonicity == "decreasing")
+    else if (constraint.descriptor.Contains("decreasing"))
       yield return Tuple.Create(input_name,
                     order_derivative,
                     0.0,                    // highest function value
                     -1,                     // lowest function value
                     (double[])lb.Clone(),   // for the full input space
                     (double[])ub.Clone());  // for the full input space
-    if (constraint.monotonicity == "constant")
+    else if (constraint.descriptor.Contains("constant"))
       yield return Tuple.Create(input_name,
                     order_derivative,
                     0.0,                    // highest function value
                     0,                      // lowest function value
                     (double[])lb.Clone(),   // for the full input space
                     (double[])ub.Clone());  // for the full input space
-
+    else if (constraint.descriptor == "None")
+      continue;
+    else
+      throw new Exception($"Descriptor not supported {constraint.descriptor} for equation {equationInfo.EquationName}");
   }
 }
