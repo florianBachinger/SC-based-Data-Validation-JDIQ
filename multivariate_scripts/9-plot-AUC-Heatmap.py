@@ -10,7 +10,7 @@ result_figure = 'figures/multivariate/9-AUC-Heatmap.png'
 df = pd.read_csv(result_file)
 df = df[df['ErrorScaling'] == 1]
 df = df[df['DataSize'] == 200]
-
+  
 
 f, ax = plt.subplots(1,1,  sharex=True, sharey=True, figsize=(3.5,2.5))
 plt.subplots_adjust(left=0.13, bottom=0.2, right=0.79, top=0.924, wspace=0.05, hspace=0.1)

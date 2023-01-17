@@ -36,9 +36,9 @@ max  = np.max([np.max(Z),np.max(Z2), np.max(Z3)])
 norm = Normalize(vmin=min, vmax=max )
 cmap = cm.get_cmap('coolwarm')
 
-fig, ax = plt.subplots(1,3, figsize=(6,2),  sharey=True, sharex=True, gridspec_kw={
+fig, ax = plt.subplots(1,3, figsize=(6,2.2),  sharey=True, sharex=True, gridspec_kw={
     'height_ratios': [1], 'width_ratios': [1,1,1]})
-plt.subplots_adjust(left=0.09, bottom=0.22, right=0.87, top=0.87, wspace=0.1, hspace=0.1)
+plt.subplots_adjust(left=0.09, bottom=0.22, right=0.87, top=0.85, wspace=0.1, hspace=0.1)
 
 cp = ax[0].contourf(X,Y,Z, cmap= cmap , norm= norm)
 ax[0].set_xlabel("$\sigma$")
@@ -53,11 +53,12 @@ ax[2].set_xlabel("$\sigma$")
 
 
 ax[0].text(1.5, 3, '$f(\sigma,\\theta)$' ,   fontsize = 10, va='bottom', ha='left')
-ax[1].text(1.8, 3.01, '$\\frac{\partial f}{\partial \sigma}$' ,   fontsize = 10, va='bottom', ha='left')
-ax[2].text(1.8, 3.01, '$\\frac{\partial f}{\partial \\theta}$',  fontsize = 10, va='bottom', ha='left')
+ax[1].text(1.8, 3.01, '$\\frac{\partial f}{\partial \sigma}$' ,   fontsize = 14, va='bottom', ha='left')
+ax[2].text(1.8, 3.01, '$\\frac{\partial f}{\partial \\theta}$',  fontsize = 14, va='bottom', ha='left')
 
+ax[0].yaxis.set_ticks(np.arange(1, 4, 1))
 
-cbar_ax = fig.add_axes([.89, .22, .025, .65])
+cbar_ax = fig.add_axes([.89, .22, .025, .63])
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)
 
 plt.savefig('figures/experimental_setup/Feynman2_contour_derviative.png', dpi = 600)

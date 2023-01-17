@@ -175,7 +175,7 @@ class Multivariate:
     elif(error_function_name == 'Normal'):
       X = data.loc[mask,inputs].to_numpy()
       rv = multivariate_normal(centers, np.diag(np.ones(number_of_inputs)))
-      data.loc[mask,error_function_variable_name] = rv.pdf( X)
+      data.loc[mask,error_function_variable_name] = fn.Normalize01(rv.pdf( X))
 
     elif ((error_function_name == 'None') | (error_function_name == None)):
       data[output_target_name] = target 
