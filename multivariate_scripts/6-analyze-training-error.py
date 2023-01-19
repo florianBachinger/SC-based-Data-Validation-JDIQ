@@ -47,8 +47,12 @@ for file in files:
   filename = result_filename.replace('_d5_i3_l1E-05_a0,5','')
 
   equation_name = data['equation_name'][0]
-  errorfunction = filename.split('_')[2]
+  errorfunction = filename.split('_')[-1]
 
+  # if(errorfunction == 'Spike'):
+  #   continue
+  # if(errorfunction == 'Square'):
+  #   continue
   filtered = overview[overview["FileName"] == filename]
 
   if(len(filtered)!=1):

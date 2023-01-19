@@ -48,10 +48,13 @@ for file in files:
 
   equation_name = data['equation_name'][0]
   varied_variable_name = data['varied_variable_name'][0]
-  if '_' in varied_variable_name:
-    errorfunction = filename.split('_')[3]
-  else:
-    errorfunction = filename.split('_')[2]
+  errorfunction = filename.split('_')[-1]
+
+  # if(errorfunction == 'Spike'):
+  #   continue
+  # if(errorfunction == 'Square'):
+  #   continue
+
 
   filtered = generatedDatasetsWithErrorOverview[generatedDatasetsWithErrorOverview["FileName"] == filename]
 

@@ -96,7 +96,7 @@ for equation in equations:
 
   for data_size in [50, 100]:
     for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
-      for noise_level_percentage in [0.01, 0.02, 0.03, 0.05, 0.1]:
+      for noise_level_percentage in [ 0.02,  0.05, 0.1, 0.15, 0.2, 0.25]:
         for error_scaling_sigma in [0.5, 1, 1.5 ]:
           for current_variable in equation['Variables']:
             # add metadata
