@@ -25,8 +25,8 @@ df3 = pd.read_csv('data/multivariate/4_datasets_with_error/Feynman2_s200_n0.01_e
 
 
 
-fig, ax = plt.subplots(3,3, figsize=(4,4),  sharey=True, sharex=True, gridspec_kw={
-    'height_ratios': [1,1,1], 'width_ratios': [1,1,1]})
+fig, ax = plt.subplots(1,3, figsize=(6,2),  sharey=True, sharex=True, gridspec_kw={
+    'height_ratios': [1], 'width_ratios': [1,1,1]})
 plt.subplots_adjust(left=0.14, bottom=0.12, right=0.99, top=0.95, wspace=0.1, hspace=0.1)
 
 
