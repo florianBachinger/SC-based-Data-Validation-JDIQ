@@ -16,8 +16,7 @@ def PlotContour(zi, x, y, axis , yLabelAddition, text, printTitle=False, plotYLa
   grid_x, grid_y = np.mgrid[1:3:200j, 1:3:200j]
   grid_z0 = griddata((y,x), zi, (grid_x, grid_y), method='linear')
 
-  norm = Normalize( vmin=-np.max(zi), vmax=np.max(zi))
-  cmap = cm.get_cmap('coolwarm')
+
   axis.contourf(grid_x, grid_y, grid_z0, cmap= cmap , norm= norm)
   axis.set_xlabel("$\sigma$")
   if plotYLabel:
@@ -28,10 +27,9 @@ def PlotContour(zi, x, y, axis , yLabelAddition, text, printTitle=False, plotYLa
 
 
 #--------------------- define figure size ---------------------
-fig, ax = plt.subplots(1,3, figsize=(5,2),  sharey=True, sharex=True, gridspec_kw={
+fig, ax = plt.subplots(1,3, figsize=(6,2.2),  sharey=True, sharex=True, gridspec_kw={
     'height_ratios': [1], 'width_ratios': [1,1,1]})
-plt.subplots_adjust(left=0.09, bottom=0.24, right=0.99, top=0.82, wspace=0.1, hspace=0.1)
-
+plt.subplots_adjust(left=0.09, bottom=0.22, right=0.87, top=0.85, wspace=0.1, hspace=0.1)
 
 # --------------------- read Feynman2 with noise and error ---------------------
 borderpoints = [(1.0,1.0),(1.0,3.0),(3.0,1.0),(3.0,3.0)]
@@ -46,10 +44,12 @@ df1 = df1.append(border)
 x = df1['theta']
 y = df1['sigma']
 z1 = df1['target_with_noise']
-z2 = df1['error_function']
+z2 = df1['error_function'] * 1.5 * np.std( df1['target'])
 z3 = df1['target_with_error']
 
-
+max = np.max(list(zip(z1,z2,z3)))
+norm = Normalize( vmin=-max, vmax=max)
+cmap = cm.get_cmap('coolwarm')
 
 # --------------------- plot Feynman2 with noise and error ---------------------
 
@@ -57,15 +57,18 @@ PlotContour(z1,x,y,ax[0],"", "random noise\nwith $\zeta = 0.01$",True, True)
 PlotContour(z2,x,y,ax[1],"",  "error function\nwith $\psi = 0.125$",True, False)
 PlotContour(z3,x,y,ax[2],"",  "erroneous dataset\nwith $\phi = 1.5$",True, False)
 
-ax[1].add_patch(Rectangle((1.05,1.55),0.75,0.75,
+ax[1].add_patch(Rectangle((1.09,1.76),0.75,0.75,
                     edgecolor= sns.color_palette("coolwarm", n_colors=10).as_hex()[9],
                     facecolor='none',
                     lw=1))
-
 
 ax[0].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
 ax[1].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
 ax[2].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
 
+cbar_ax = fig.add_axes([.89, .22, .025, .63])
+cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)
+cbar_ax.set_xlim(0,max)
+cbar_ax.set_ylim(0,max)
 plt.savefig('figures/experimental_setup/Feynman2_data_generation_error.png', dpi = 600)
 plt.show()

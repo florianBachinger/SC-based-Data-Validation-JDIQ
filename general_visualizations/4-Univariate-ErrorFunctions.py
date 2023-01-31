@@ -66,5 +66,6 @@ ax[0].tick_params(axis='both', left=True, top=False, right=False, bottom=True, l
 ax[1].tick_params(axis='both', left=True, top=False, right=False, bottom=True, labelleft=False, labeltop=False, labelright=False, labelbottom=True)
 ax[2].tick_params(axis='both', left=True, top=False, right=False, bottom=True, labelleft=False, labeltop=False, labelright=False, labelbottom=True)
 
+
 plt.savefig('figures/experimental_setup/univariate_error_functions.png', dpi = 600)
 plt.show()

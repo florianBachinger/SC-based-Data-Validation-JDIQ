@@ -6,6 +6,7 @@ import shared_packages.Feynman.Functions as ff
 import shared_packages.Feynman.Constraints as fc
 import shared_packages.SyntheticError.DataTransformation as sedt
 from scipy.interpolate import griddata
+from matplotlib.colors import LinearSegmentedColormap
 import random
 
 import matplotlib.cm as cm
@@ -16,9 +17,9 @@ np.random.seed(31415)
 
 
 #--------------------- define figure size ---------------------
-fig, ax = plt.subplots(1,3, figsize=(5,1.5),  sharey=True, sharex=True, gridspec_kw={
+fig, ax = plt.subplots(1,3, figsize=(6,1.7),  sharey=True, sharex=True, gridspec_kw={
     'height_ratios': [1], 'width_ratios': [1,1,1]})
-plt.subplots_adjust(left=0.09, bottom=0.15, right=0.99, top=0.97, wspace=0.1, hspace=0.1)
+plt.subplots_adjust(left=0.09, bottom=0.15, right=0.87, top=0.95, wspace=0.1, hspace=0.1)
 
 
 
@@ -49,6 +50,8 @@ z = [0] * len(x)
 affected_space_width = sedt.Multivariate.CalculateAffectedSpace(len(x),dimension_data,0.2)
 shifted_space = sedt.Multivariate.ShiftAffectedSpace( dimension_data, affected_space_width)
 
+norm = Normalize(vmin=-1, vmax=1)
+cmap = cm.get_cmap('coolwarm')
 
 def drawError(ax, functionName):
   data_error = pd.DataFrame(list(zip(x,y,z)), columns= ["x","y","z"])
@@ -63,9 +66,6 @@ def drawError(ax, functionName):
 
   Z = np.array(data_error['ef']).reshape((-1, dimSize))
 
-  norm = Normalize(vmin=-np.max(Z) , vmax=np.max(Z) )
-  cmap = cm.get_cmap('coolwarm')
-
   ax.set_xticks([0,1])
   ax.set_xticklabels(['0','1'])
   ax.set_yticks([0,1])
@@ -76,5 +76,9 @@ drawError(ax[0],'Spike')
 drawError(ax[1],'Square')
 drawError(ax[2],'Normal')
 
+cbar_ax = fig.add_axes([.89, .14, .025, .79])
+cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)
+cbar_ax.set_xlim(0,1)
+cbar_ax.set_ylim(0,1)
 plt.savefig('figures/experimental_setup/2d_errorFunctions.png', dpi = 600)
 plt.show()
