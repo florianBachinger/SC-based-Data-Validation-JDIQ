@@ -14,18 +14,19 @@ np.random.seed(31415)
 
 
 target_name = 'target_with_noise'
-instances = [
-'I.6.2',
-'I.9.18', 
-'I.15.3x', 
-'I.30.5', 
+instances = ['I.6.2',
+'I.9.18',
+'I.15.3x',
+'I.30.5',
 'I.32.17',
-'I.41.16', 
-'I.48.20', 
+'I.41.16',
+'I.48.2',
 'II.6.15a',
+'II.11.27', # will only generate constant values
+'II.11.28', # will only generate constant values
 'II.35.21',
-'III.10.19'
-]
+# 'III.9.52', # no constraints available
+'III.10.19',]
 
 Degrees = [3,4,5,6,7]
 Lambdas = [10**-7,10**-6,10**-5,10**-4,10**-3,10**-2,10**-1,1]
@@ -89,6 +90,11 @@ for equation in equations:
     #calculate equation and add to training data
     input = data.to_numpy()
     data['target'] = [eq(row) for row in input]
+
+    if(len(np.unique(data['target']))==1):
+      print(f"{equation_name}_{varied_variable_name} no change in data, skipping instance")
+      continue
+
     # 10% noise
     data[target_name] = ff.Noise([eq(row) for row in input], noise_level=0.1) 
     

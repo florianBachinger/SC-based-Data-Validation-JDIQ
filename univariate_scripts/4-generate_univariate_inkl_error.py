@@ -17,7 +17,7 @@ np.random.seed(31415)
 Degrees = [7]
 Lambdas = [0.00010]
 Alphas = [0]
-MaxInteractions = [2]
+MaxInteractions = [3]
 
 foldername = 'data/univariate/4_datasets_with_error'
 if not os.path.exists(foldername):
@@ -34,20 +34,19 @@ target_without_noiseVariable = 'target'
 target_with_error_without_noise = 'target_with_error_without_noise'
 target_with_noiseVariable = 'target_with_noise'
 target_variable = target_with_errorVariable
-instances = [
-'I.6.2',
-'I.9.18', 
-'I.15.3x', 
-'I.30.5', 
+instances = ['I.6.2',
+'I.9.18',
+'I.15.3x',
+'I.30.5',
 'I.32.17',
-'I.41.16', 
-'I.48.20', 
+'I.41.16',
+'I.48.2',
 'II.6.15a',
-# 'II.11.27', # generates a mostly contant valued flatlines if only one variable is varied, poses no challenge
-# 'II.11.28', # see above
+'II.11.27', # will only generate constant values
+'II.11.28', # will only generate constant values
 'II.35.21',
-'III.10.19'
-]
+# 'III.9.52', # no constraints available
+'III.10.19',]
 
 def Monotonic(gradients):
   gradients =np.array(gradients)
@@ -96,7 +95,7 @@ for equation in equations:
 
   for data_size in [50, 100]:
     for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
-      for noise_level_percentage in [ 0.02,  0.05, 0.1, 0.15, 0.2, 0.25]:
+      for noise_level_percentage in [0.01, 0.02,  0.05, 0.1, 0.15, 0.2, 0.25]:
         for error_scaling_sigma in [0.5, 1, 1.5 ]:
           for current_variable in equation['Variables']:
             # add metadata
@@ -126,6 +125,10 @@ for equation in equations:
             input = data.to_numpy()
             data[target_without_noiseVariable] = [eq(row) for row in input]
             
+            if(len(np.unique(data[target_without_noiseVariable]))==1):
+              print(f"{equation_name}_{varied_variable_name} no change in data, skipping instance")
+              continue
+
             # add info fields 
             data["varied_variable_name"] = [varied_variable_name] * data_size
             data["equation_name"] = [equation_name] * data_size
@@ -157,7 +160,7 @@ for equation in equations:
                                                                                                         ,returnErrorFunction=True)
               data_error[target_with_error_without_noise] = data[target_without_noiseVariable] + (data_error['error_function'] * error_value)
 
-              print(f"{equation_name.ljust(10)} {varied_variable_name.ljust(8)} {error_function.ljust(14)} {data_size} {error_width_percentage} {noise_level_percentage} {error_scaling_sigma}" )
+              # print(f"{equation_name.ljust(10)} {varied_variable_name.ljust(8)} {error_function.ljust(14)} {data_size} {error_width_percentage} {noise_level_percentage} {error_scaling_sigma}" )
 
               filename = f"{equation_name}_{varied_variable_name}_s{data_size}_n{noise_level_percentage}_es{error_scaling_sigma}_ew{error_width_percentage}_{error_function}"
               data_error.to_csv(f"{foldername}/{filename}.csv", index = False)

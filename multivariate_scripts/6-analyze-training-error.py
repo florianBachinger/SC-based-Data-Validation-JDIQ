@@ -44,7 +44,7 @@ for file in files:
   result_filename_withExtension =  os.path.basename(file)
   result_filename = os.path.splitext(result_filename_withExtension)[0]
 
-  filename = result_filename.replace('_d5_i3_l1E-05_a0,5','')
+  filename = result_filename.replace('_d5_i3_l0,001_a0','')
 
   equation_name = data['equation_name'][0]
   errorfunction = filename.split('_')[-1]

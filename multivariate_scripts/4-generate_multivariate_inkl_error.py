@@ -21,10 +21,9 @@ np.random.seed(31415)
 #                     0.5   3                 7.734132
 #                     0.0   3                 7.734132
 # 1.000000e-07 5      0.0   3                 7.734133
-
 Degrees = [5]
-Lambdas = [0.0000100]
-Alphas = [0.5]
+Lambdas = [0.00100]
+Alphas = [0]
 MaxInteractions = [3]
 
 foldername = 'data/multivariate/4_datasets_with_error'
@@ -42,20 +41,19 @@ target_without_noiseVariable = 'target'
 target_with_error_without_noise = 'target_with_error_without_noise'
 target_with_noiseVariable = 'target_with_noise'
 target_variable = target_with_errorVariable
-instances = [
-'I.6.2',
-'I.9.18', 
-'I.15.3x', 
-'I.30.5', 
+instances = ['I.6.2',
+'I.9.18',
+'I.15.3x',
+'I.30.5',
 'I.32.17',
-'I.41.16', 
-'I.48.20', 
+'I.41.16',
+'I.48.2',
 'II.6.15a',
 'II.11.27',
 'II.11.28',
 'II.35.21',
-'III.10.19'
-]
+# 'III.9.52', # no constraints available
+'III.10.19',]
 
 # take only the equations specified above
 filter = [ np.any( [item['DescriptiveName'].endswith(name) for name in instances] ) for item in ff.FunctionsJson]
@@ -85,9 +83,9 @@ for equation in equations:
   with open(f'{foldername}/{equation_name}.json', 'w') as f:
     f.write(str(equation_constraints).replace('\'', '"'))
 
-  for data_size in [200, 500,]:
+  for data_size in [200, 500]:
     for error_width_percentage in [0.05, 0.075, 0.1, 0.125, 0.15]:
-      for noise_level_percentage in [ 0.02,  0.05, 0.1, 0.15, 0.2, 0.25]:
+      for noise_level_percentage in [ 0.01, 0.02,  0.05, 0.1, 0.15, 0.2, 0.25]:
         for error_scaling_sigma in [0.5, 1, 1.5]:
             
             #generate uniform random input space

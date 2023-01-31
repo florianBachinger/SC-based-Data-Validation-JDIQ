@@ -5,7 +5,7 @@ from matplotlib.colors import Normalize
 import seaborn as sns
 
 result_file = f'data/multivariate/2_gridsearch_results/_results.csv'
-result_figure = 'figures/multivariate/1-gridsearch_results.png'
+result_figure = 'figures/multivariate/multivariate-1-gridsearch_results.png'
 
 df = pd.read_csv(result_file)
 df = df[df['Lambda'] < 1]
@@ -54,7 +54,7 @@ rmseSums = df[['Lambda', 'Degree', 'Alpha', 'MaxInteractions',rmse_column ]
 print(rmseSums.nsmallest(10, rmse_column))
 
 norm = Normalize(vmin=np.min(rmseSums), vmax=np.max(rmseSums))
-cmap = sns.color_palette("magma_r", as_cmap=True,)
+cmap = sns.color_palette("mako_r", as_cmap=True,)
 cbar_ax = f.add_axes([.86, .4, .02, .40])
 
 row = 0
