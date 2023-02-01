@@ -62,9 +62,9 @@ ax[1].add_patch(Rectangle((1.09,1.76),0.75,0.75,
                     facecolor='none',
                     lw=1))
 
-ax[0].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
-ax[1].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
-ax[2].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
+ax[0].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
+ax[1].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
+ax[2].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
 
 cbar_ax = fig.add_axes([.89, .22, .025, .63])
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)

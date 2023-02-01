@@ -77,14 +77,14 @@ z4 = df1['target_with_error']
 # --------------------- plot uniform random input and linar approx ---------------------
 
 PlotContour(z1,x,y,ax[1],"", "linear approximated\nuniform random input",True, False)
-ax[1].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
+ax[1].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
 ax[1].set_xlabel("$\sigma$")
 
 
 # --------------------- plot Feynman2 with noise and error ---------------------
 
 PlotContour(z2,x,y,ax[2],"", "linear approximated\nwith $\zeta = 0.01$",True, False)
-ax[2].scatter(y,x, s = 3, marker = "x", c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.4)
+ax[2].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
 
 cbar_ax = fig.add_axes([.89, .22, .025, .63])
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)
