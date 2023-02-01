@@ -2,3 +2,11 @@ data/univariate/1_gridsearch.zip filter=lfs diff=lfs merge=lfs -text
 data/univariate/2_gridsearch_results.zip filter=lfs diff=lfs merge=lfs -text
 data/univariate/4_datasets_with_error.zip filter=lfs diff=lfs merge=lfs -text
 data/univariate/5_validation_model_results.zip filter=lfs diff=lfs merge=lfs -text
+data/univariate/1_gridsearch.7z filter=lfs diff=lfs merge=lfs -text
+data/univariate/2_gridsearch_results.7z filter=lfs diff=lfs merge=lfs -text
+data/univariate/4_datasets_with_error.7z filter=lfs diff=lfs merge=lfs -text
+data/univariate/5_validation_model_results.7z filter=lfs diff=lfs merge=lfs -text
+data/multivariate/2_gridsearch_results.7z filter=lfs diff=lfs merge=lfs -text
+data/multivariate/4_datasets_with_error.7z filter=lfs diff=lfs merge=lfs -text
+data/multivariate/5_validation_model_results.7z filter=lfs diff=lfs merge=lfs -text
+data/multivariate/1_gridsearch.7z filter=lfs diff=lfs merge=lfs -text

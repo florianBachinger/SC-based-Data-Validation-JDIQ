@@ -106,6 +106,7 @@ for equation in equations:
             variable_constraints = [var_constraint for var_constraint in equation_constraints['Constraints'] if ((var_constraint['name'] == varied_variable_name) and (var_constraint['descriptor'] != "None") ) ]
 
             if(len(variable_constraints)== 0):
+              print(f"{equation_name}_{varied_variable_name} no constraints, skipping instance")
               continue
 
             # add uniform variable
