@@ -43,9 +43,16 @@ for (result_figure, results) in combi:
       ax[colIndex].set_xlabel("")
       ax[colIndex].set_ylabel("")
       if((rowIndex == 1)):
-        ax[colIndex].set_xlabel(f'error function width $\psi$\nscaling $\phi = {scaling}$')
+        ax[colIndex].set_xlabel(f'$\psi$\n$\phi = {scaling}$')
+        if(colIndex == 2):
+          ax[colIndex].set_xlabel(f'$\psi$ - error function width\n$\phi = {scaling}$ - scaling')
+
+
       if(colIndex == 0):
-        ax[colIndex].set_ylabel(f'{text}\nnoise level $\zeta$')
+        ax[colIndex].set_ylabel(f'{text}\n$\zeta$')
+        if((rowIndex == 0)):
+          ax[colIndex].set_ylabel(f'{text}\n$\zeta$ - noise level ')
+
 
 
       colIndex = colIndex + 1

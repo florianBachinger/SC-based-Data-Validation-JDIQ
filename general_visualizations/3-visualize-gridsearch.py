@@ -96,14 +96,18 @@ for (problemtype,df) in problemTypes:
 
 
     if(axisIndex == 1):
-      ax[col].set_xlabel(f'{ax[col].get_xlabel()}\nAlpha: {Alpha}')
+      ax[col].set_xlabel(f'd\n$\\alpha = {Alpha}$')
+      if(col == 2):
+        ax[col].set_xlabel(f'd - Degree\n$\\alpha = {Alpha}$')
+
+    
     else:
       ax[col].set_xlabel(f'')
 
     if(col > 0):
       ax[col].set_ylabel("")
     else:
-      ax[col].set_ylabel(f'{problemtype}\n{ax[col].get_ylabel()}')
+      ax[col].set_ylabel(f'{problemtype}\n$\lambda$')
 
     col = col+1
 
