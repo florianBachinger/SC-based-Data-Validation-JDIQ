@@ -52,14 +52,14 @@ cp = ax[2].contourf(X,Y,Z3, cmap = cmap, norm = norm)
 ax[2].set_xlabel("$\sigma$")
 
 
-ax[0].text(1.5, 3, '$f(\sigma,\\theta)$' ,   fontsize = 10, va='bottom', ha='left')
-ax[1].text(1.8, 3.01, '$\\frac{\partial f}{\partial \sigma}$' ,   fontsize = 14, va='bottom', ha='left')
-ax[2].text(1.8, 3.01, '$\\frac{\partial f}{\partial \\theta}$',  fontsize = 14, va='bottom', ha='left')
+ax[0].text(1.5, 3.02, '$f(\sigma,\\theta)$' ,   fontsize = 10, va='bottom', ha='left')
+ax[1].text(1.8, 3.03, '$\\frac{\partial f}{\partial \sigma}$' ,   fontsize = 14, va='bottom', ha='left')
+ax[2].text(1.8, 3.03, '$\\frac{\partial f}{\partial \\theta}$',  fontsize = 14, va='bottom', ha='left')
 
 ax[0].yaxis.set_ticks(np.arange(1, 4, 1))
 
 cbar_ax = fig.add_axes([.89, .22, .025, .63])
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)
 
-plt.savefig('figures/experimental_setup/Feynman2_contour_derviative.png', dpi = 600)
+plt.savefig('figures/experimental_setup/Feynman2_contour_derviative.pdf', dpi = 600)
 plt.show()

@@ -11,7 +11,7 @@ uni = pd.read_csv(univariate_result_file)
 multivariate_result_file = f'data/multivariate/2_gridsearch_results/_results.csv'
 multi = pd.read_csv(multivariate_result_file)
 
-result_figure = 'figures/experimental_setup/gridsearch_feynman.png'
+result_figure = 'figures/experimental_setup/gridsearch_feynman.pdf'
 
 problemTypes = [('univariate', uni),('multivariate',multi)]
 

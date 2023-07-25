@@ -6,8 +6,8 @@ import seaborn as sns
 
 AUC_multi_file = f'data/multivariate/8-AUC_comparison.csv'
 AUC_uni_file = f'data/univariate/8-AUC_comparison.csv'
-result_figure1 = 'figures/experimental_setup/AUC-Heatmap.png'
-result_figure2 = 'figures/experimental_setup/AUC-Heatmap-largerSize.png'
+result_figure1 = 'figures/experimental_setup/AUC-Heatmap.pdf'
+result_figure2 = 'figures/experimental_setup/AUC-Heatmap-largerSize.pdf'
 
 AUC_multi = pd.read_csv(AUC_multi_file)
 AUC_uni = pd.read_csv(AUC_uni_file)

@@ -23,13 +23,13 @@ def PlotContour(zi, x, y, axis , yLabelAddition, text, printTitle=False, plotYLa
     axis.set_ylabel(yLabelAddition+"\n$\\theta$")
     axis.yaxis.set_ticks(np.arange(1, 4, 1))
   if printTitle:
-    axis.text(2, 3, text ,   fontsize = 10, va='bottom', ha='center')
+    axis.text(2, 3.02, text ,   fontsize = 10, va='bottom', ha='center')
 
 
 #--------------------- define figure size ---------------------
 fig, ax = plt.subplots(1,3, figsize=(6,2.2),  sharey=True, sharex=True, gridspec_kw={
     'height_ratios': [1], 'width_ratios': [1,1,1]})
-plt.subplots_adjust(left=0.09, bottom=0.22, right=0.87, top=0.85, wspace=0.1, hspace=0.1)
+plt.subplots_adjust(left=0.09, bottom=0.186, right=0.87, top=0.829, wspace=0.1, hspace=0.1)
 
 # --------------------- read Feynman2 with noise and error ---------------------
 borderpoints = [(1.0,1.0),(1.0,3.0),(3.0,1.0),(3.0,3.0)]
@@ -62,13 +62,13 @@ ax[1].add_patch(Rectangle((1.09,1.76),0.75,0.75,
                     facecolor='none',
                     lw=1))
 
-ax[0].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
-ax[1].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
-ax[2].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
+ax[0].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  '#777777', alpha =.5)
+ax[1].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  '#777777', alpha =.5)
+ax[2].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  '#777777', alpha =.5)
 
 cbar_ax = fig.add_axes([.89, .22, .025, .63])
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)
 cbar_ax.set_xlim(0,max)
 cbar_ax.set_ylim(0,max)
-plt.savefig('figures/experimental_setup/Feynman2_data_generation_error.png', dpi = 600)
+plt.savefig('figures/experimental_setup/Feynman2_data_generation_error.pdf', dpi = 600)
 plt.show()

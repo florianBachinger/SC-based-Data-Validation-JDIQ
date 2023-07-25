@@ -24,13 +24,13 @@ def PlotContour(zi, x, y, axis , yLabelAddition, text, printTitle=False, plotYLa
     axis.set_ylabel(yLabelAddition+"\n$\\theta$")
     axis.yaxis.set_ticks(np.arange(1, 4, 1))
   if printTitle:
-    axis.text(2, 3, text ,   fontsize = 10, va='bottom', ha='center')
+    axis.text(2, 3.02, text ,   fontsize = 10, va='bottom', ha='center')
 
 
 #--------------------- define figure size ---------------------
 fig, ax = plt.subplots(1,3, figsize=(6,2.2),  sharey=True, sharex=True, gridspec_kw={
     'height_ratios': [1], 'width_ratios': [1,1,1]})
-plt.subplots_adjust(left=0.09, bottom=0.22, right=0.87, top=0.84, wspace=0.1, hspace=0.1)
+plt.subplots_adjust(left=0.09, bottom=0.186, right=0.87, top=0.829, wspace=0.1, hspace=0.1)
 
 # --------------------- generate Feynman2 without noise ---------------------
 data = ff.Feynman2.generate_df()
@@ -52,7 +52,7 @@ ax[0].contourf(X,Y,Z, cmap= cmap , norm= norm)
 cp = ax[0].contourf(X,Y,Z, cmap= cmap , norm= norm)
 ax[0].set_xlabel("$\sigma$")
 ax[0].set_ylabel("$\\theta$")
-ax[0].text(2, 3, "equation output" ,   fontsize = 10, va='bottom', ha='center')
+ax[0].text(2, 3.02, "equation output" ,   fontsize = 10, va='bottom', ha='center')
 ax[0].yaxis.set_ticks(np.arange(1, 4, 1))
 
 # --------------------- read Feynman2 with noise and error ---------------------
@@ -77,18 +77,18 @@ z4 = df1['target_with_error']
 # --------------------- plot uniform random input and linar approx ---------------------
 
 PlotContour(z1,x,y,ax[1],"", "linear approximated\nuniform random input",True, False)
-ax[1].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
+ax[1].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  '#777777', alpha =.5)
 ax[1].set_xlabel("$\sigma$")
 
 
 # --------------------- plot Feynman2 with noise and error ---------------------
 
 PlotContour(z2,x,y,ax[2],"", "linear approximated\nwith $\zeta = 0.01$",True, False)
-ax[2].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  sns.color_palette("coolwarm", n_colors=10).as_hex()[9], alpha =.5)
+ax[2].scatter(y,x, s = 9, marker = "x",linewidth = 1, c =  '#777777', alpha =.5)
 
 cbar_ax = fig.add_axes([.89, .22, .025, .63])
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),cax = cbar_ax)
 cbar_ax.set_xlim(0,max)
 cbar_ax.set_ylim(0,max)
-plt.savefig('figures/experimental_setup/Feynman2_data_generation.png', dpi = 600)
+plt.savefig('figures/experimental_setup/Feynman2_data_generation.pdf', dpi = 600)
 plt.show()
